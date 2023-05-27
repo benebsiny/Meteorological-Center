@@ -32,9 +32,6 @@ services:
   database:
     build:
       context: ./database
-
-    volumes:
-      - ./database/data:/data/db
     
     container_name: mc-database
     ports:
@@ -42,3 +39,11 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${DATABASE_USER}
       - MONGO_INITDB_ROOT_PASSWORD=${DATABASE_PASSWORD}
+
+    volumes:
+      - ./database/data:/data/db
+      - ./database/mongo-init.js:/docker-entrypoint-initdb.d/init.js:ro
+
+  crawler:
+    build:
+      context: ./crawler

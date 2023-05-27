@@ -1,4 +1,7 @@
+**/.idea/
 **/node_modules/
 **/package-lock.json
 **/.env
 database/data/**
+**/__pycache__/
+**/venv/

@@ -1,1 +1,1 @@
-FROM mongo:5.0-focal
+FROM mongo:6.0
