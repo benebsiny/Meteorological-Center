@@ -14,8 +14,21 @@ interface types {
 export default async function (): Promise<types[]> {
     const connection = await connect();
     const data = await connection.db('local').collection('earthquake').find().sort({time: -1}).toArray() as any;
-    for (let i = 0; i < data.length; i++) {
-        delete data[i]['_id'];
+
+    const today = new Date();
+
+    const result = [];
+    for (const d of data) {
+        
+        const time = new Date(d.time);
+
+        if ((today.getTime() - time.getTime()) >= 7*24*60*60*1000) {
+            break;
+        }
+
+        delete d['_id'];
+        result.push(d);
     }
-    return data as types[];
+
+    return result as types[];
 }

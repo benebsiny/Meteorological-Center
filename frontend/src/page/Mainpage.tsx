@@ -3,7 +3,7 @@ import "style/mainpage.scss"
 import tw from "assets/tw.svg"
 import { ReactComponent as Logo } from 'assets/tw.svg'
 
-const Mainpage: FC<{}> = () => {
+const Mainpage: FC<any> = () => {
     return (
         <>
             <div className="flex flex-row">

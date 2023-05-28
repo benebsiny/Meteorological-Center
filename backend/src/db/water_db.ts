@@ -27,16 +27,17 @@ interface types {
     石岡壩: sub,
     牡丹水庫: sub,
     德基水庫: sub,
+    [x: string]: sub,
 }
 
 export default async function (): Promise<types> {
     const connection = await connect();
-    const data = await connection.db('local').collection('water').findOne({update_time: "2023-05-21 14:55:55"}) as any;
+    const data = await connection.db('local').collection('water').findOne({timestamp: "2023-05-21 14:55:55"}) as any;
     if (data) {
         delete data['_id'];
         delete data['timestamp'];
-        
-        return data as types;
+
+        return data.reservoir as types;
     } else {
         throw new Error('No data found');
     }
