@@ -27,7 +27,7 @@ services:
     volumes:
       - ./backend:/app
     command: >
-      sh -c "cd /app && npm install && npm run dev"
+      sh -c "cd /app && npm install && npm run dev:start"
 
   database:
     build:

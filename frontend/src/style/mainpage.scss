@@ -1,0 +1,16 @@
+.tw-map {
+  fill: #26273B;
+
+  path {
+    &:hover {
+      filter: brightness(170%);
+      transition: filter 0.2s linear;
+    }
+    &.clicked, &.active {
+      filter: brightness(250%);
+    }
+    cursor: pointer;
+  }
+
+  transition: filter 0.2s linear;
+}
