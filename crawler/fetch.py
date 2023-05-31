@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import datetime
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 
 def get_electricity():

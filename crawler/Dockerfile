@@ -3,3 +3,4 @@ RUN mkdir /app
 WORKDIR /app
 COPY fetch.py main.py requirements.txt /app/
 RUN pip install -r requirements.txt
+CMD ["python3", "main.py"]

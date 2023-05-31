@@ -47,3 +47,8 @@ services:
   crawler:
     build:
       context: ./crawler
+    container_name: mc-crawler
+    env_file:
+      - .env
+    volumes:
+      - ./crawler:/app
