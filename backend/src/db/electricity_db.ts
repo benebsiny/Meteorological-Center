@@ -15,7 +15,7 @@ interface types {
 
 export default async function (): Promise<types> {
     const connection = await connect();
-    const data = await connection.db('local').collection('electricity').findOne({update_time: "112.05.21 14:10"}) as any;
+    const data = await connection.db('local').collection('electricity').find().sort({update_time: -1}).limit(1).tryNext() as any;
     if (data) {
         delete data['_id'];
         delete data['update_time'];

@@ -1,10 +1,16 @@
-import { MongoClient } from 'mongodb'
+import {MongoClient} from 'mongodb'
 
 async function connectDB(): Promise<MongoClient> {
-    const url = 'mongodb://database:27017';
+
+    let url;
+    if (process.env.DATABASE_USER === undefined || process.env.DATABASE_PASSWORD === undefined) {
+        url = 'mongodb://database:27017';
+    } else {
+        url = `mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@database:27017`;
+    }
     const client = new MongoClient(url);
-    const connect = await client.connect();
-    return connect;
+    return await client.connect();
+
 }
 
 export default connectDB;

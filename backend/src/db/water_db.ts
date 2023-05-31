@@ -32,7 +32,7 @@ interface types {
 
 export default async function (): Promise<types> {
     const connection = await connect();
-    const data = await connection.db('local').collection('water').findOne({timestamp: "2023-05-21 14:55:55"}) as any;
+    const data = await connection.db('local').collection('water').find().sort({timestamp: -1}).limit(1).tryNext() as any;
     if (data) {
         delete data['_id'];
         delete data['timestamp'];
