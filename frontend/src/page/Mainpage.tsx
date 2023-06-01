@@ -1,7 +1,8 @@
 import React, {FC, MouseEventHandler, RefObject, useEffect, useRef, useState} from "react";
 import "style/mainpage.scss"
 import {ReactComponent as Logo} from 'assets/tw.svg'
-import Gauge from "component/Gauge";
+import ElectricityGauge from "component/ElectricityGauge";
+import WaterGauge from "component/WaterGauge";
 
 const Mainpage: FC<any> = () => {
 
@@ -76,11 +77,21 @@ const Mainpage: FC<any> = () => {
                     {clickedCounty && data &&
                         <>
                             <h1>{clickedCounty}</h1>
-                            <Gauge
+                            <ElectricityGauge
                                 usage={data[clickedCounty].electricity.usage}
                                 maxSupply={data[clickedCounty].electricity.max_supply}
                                 minSupply={data[clickedCounty].electricity.min_supply}
                             />
+                            {
+                                data[clickedCounty].water.map((item: any, index: number) => (
+                                    <WaterGauge
+                                        key={index}
+                                        baseAvailable={item.baseAvailable}
+                                        volumn={item.volumn}
+                                        waterName={item.water}
+                                    />
+                                ))
+                            }
                         </>
                     }
                 </div>

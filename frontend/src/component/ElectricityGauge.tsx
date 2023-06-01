@@ -9,7 +9,7 @@ interface Props {
 let cur = 0;
 let dir = 1; // 1: clockwise, -1: counter clockwise
 
-const Gauge: FC<Props> = (props) => {
+const ElectricityGauge: FC<Props> = (props) => {
     let usage = Math.round(props.usage);
     const maxSupply = Math.round(props.maxSupply);
     const minSupply = Math.round(props.minSupply);
@@ -92,7 +92,7 @@ const Gauge: FC<Props> = (props) => {
         // const gradient = ctx.createLinearGradient(0, 0, 0, 170);
         let gradient = ctx.createConicGradient(0.8 * Math.PI, centerX, centerY);
         gradient.addColorStop(0, "#34D5F6");
-        gradient.addColorStop(0.3, "#05BBFE");
+                gradient.addColorStop(0.3, "#05BBFE");
         ctx.beginPath();
         ctx.arc(centerX, centerY, 100, 0.8 * Math.PI, 1.5 * Math.PI);
         ctx.strokeStyle = gradient;
@@ -165,4 +165,4 @@ const Gauge: FC<Props> = (props) => {
     );
 }
 
-export default Gauge;
+export default ElectricityGauge;
