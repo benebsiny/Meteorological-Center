@@ -16,68 +16,59 @@ const ElectricityGauge: FC<Props> = (props) => {
     if (usage < minSupply) usage = minSupply;
     if (usage > maxSupply) usage = maxSupply;
 
-    const [oldProps, setOldProps] = useState<Props>({usage: 700, maxSupply: 1000, minSupply: 0});
+    const [oldProps, setOldProps] = useState<Props>({usage: 0, maxSupply: 1000, minSupply: 0});
     const gaugeRef = useRef<HTMLCanvasElement>(null);
     const statsRef = useRef<HTMLDivElement>(null);
     const minRef = useRef<HTMLDivElement>(null);
     const maxRef = useRef<HTMLDivElement>(null);
 
-    const oldPercentage = oldProps.usage / (oldProps.maxSupply - oldProps.minSupply);
-    const newPercentage = props.usage / (props.maxSupply - props.minSupply);
+    const oldPercentage = (oldProps.usage - oldProps.minSupply) / (oldProps.maxSupply - oldProps.minSupply);
+    const newPercentage = (props.usage - props.minSupply) / (props.maxSupply - props.minSupply);
     const diff = Math.abs(newPercentage - oldPercentage);
 
     useEffect(() => {
 
         if (oldPercentage === newPercentage) return;
+        else if (oldPercentage > newPercentage) dir = -1;
+        else dir = 1;
+        cur = 0;
 
-        if (newPercentage > oldPercentage) {
-            dir = 1; cur = 1;
-        } else {
-            dir = -1; cur = 99;
-        }
-
-        movePointer();
+        pointerAnimation();
         changeText();
 
         setOldProps(props);
     }, [props]);
 
     function changeText() {
-        if (!statsRef.current || !minRef.current || !maxRef.current) return;
-
-        if (!gaugeRef.current) return;
-        const ctx = gaugeRef.current.getContext("2d");
-        if (!ctx) return;
+        if (!statsRef.current || !minRef.current || !maxRef.current || !gaugeRef.current) return;
 
         statsRef.current.innerText = `${usage}`;
         minRef.current.innerText = `${minSupply}`;
         maxRef.current.innerText = `${maxSupply}`;
 
-        if (.7 < newPercentage && newPercentage <= 1.5) statsRef.current.style.color = "#34D5F6";
-        else if (1.5 * Math.PI < newPercentage && newPercentage <= 1.8 * Math.PI) statsRef.current.style.color = "#FFF47D";
+        if (0 < newPercentage && newPercentage <= 0.5) statsRef.current.style.color = "#34D5F6";
+        else if (0.5 < newPercentage && newPercentage <= (10/14)) statsRef.current.style.color = "#FFF47D";
         else statsRef.current.style.color = "#FB6B21";
     }
 
-    function movePointer() {
+    function pointerAnimation() {
 
         const ctx = gaugeRef.current!.getContext("2d")!;
         ctx.clearRect(0, 0, gaugeRef.current!.width, gaugeRef.current!.height);
 
         drawBackground();
 
-        if (dir === 1) drawPointer((oldPercentage + (diff * (cur / 100))) * Math.PI);
-        else drawPointer((newPercentage + (diff * (cur / 100))) * Math.PI);
+        if (dir === 1) drawPointer((0.8 + 1.4 * (oldPercentage + (diff * (cur / 100)))) * Math.PI);
+        else drawPointer((0.8 + 1.4 * (oldPercentage - (diff * (cur / 100)))) * Math.PI);
 
-        if (cur <= 0 || cur >= 100) return;
-        cur += 15 * dir;
+        if (cur >= 100) return;
+        cur += 15; // Steps
         if (cur > 100) cur = 100;
-        else if (cur < 0) cur = 0;
 
-        requestAnimationFrame(movePointer);
-
+        requestAnimationFrame(pointerAnimation);
     }
 
-    function drawBackground() {
+    function drawBackground()   {
         if (!gaugeRef.current) return;
         const ctx = gaugeRef.current.getContext("2d");
         if (!ctx) return;
@@ -146,21 +137,17 @@ const ElectricityGauge: FC<Props> = (props) => {
 
     useEffect(() => {
 
-        // let percentage = (usage - minSupply) / (maxSupply - minSupply);
-        // if (percentage < 0) percentage = 0;
-        // if (percentage > 1) percentage = 1;
-
         drawBackground();
-        drawPointer((0.8 + (1.4 * newPercentage)) * Math.PI);
+        drawPointer(0.8 * Math.PI);
 
     }, []);
 
     return (
         <div className="relative">
             <canvas width={250} height={250} ref={gaugeRef}></canvas>
-            <div className="absolute z-50 text-2xl font-bold" style={{top: "60%", left: "50%", transform: "translateX(-50%)"}} ref={statsRef}>456</div>
-            <div className="absolute z-50 text-lg" style={{top: "75%", left: "20%", transform: "translateX(-50%)", color: "#34D5F6"}} ref={minRef}>456</div>
-            <div className="absolute z-50 text-lg" style={{top: "75%", left: "80%", transform: "translateX(-50%)", color: "#F9491A"}} ref={maxRef}>456</div>
+            <div className="absolute z-50 text-2xl font-bold" style={{top: "60%", left: "50%", transform: "translateX(-50%)"}} ref={statsRef}></div>
+            <div className="absolute z-50 text-lg" style={{top: "75%", left: "20%", transform: "translateX(-50%)", color: "#34D5F6"}} ref={minRef}></div>
+            <div className="absolute z-50 text-lg" style={{top: "75%", left: "80%", transform: "translateX(-50%)", color: "#F9491A"}} ref={maxRef}></div>
         </div>
     );
 }
