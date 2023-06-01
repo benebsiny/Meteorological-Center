@@ -44,7 +44,6 @@ const Mainpage: FC<any> = () => {
     }, [clickedCounty]);
 
 
-
     useEffect(() => {
 
         const storedCounty = localStorage.getItem("county");
@@ -72,26 +71,56 @@ const Mainpage: FC<any> = () => {
 
     return (
         <>
-            <div className="flex flex-row">
-                <div>
+            <div className="flex flex-row justify-between" style={{minWidth: "1240px"}}>
+                <div className="flex flex-col ml-32">
                     {clickedCounty && data &&
                         <>
-                            <h1>{clickedCounty}</h1>
-                            <ElectricityGauge
-                                usage={data[clickedCounty].electricity.usage}
-                                maxSupply={data[clickedCounty].electricity.max_supply}
-                                minSupply={data[clickedCounty].electricity.min_supply}
-                            />
-                            {
-                                data[clickedCounty].water.map((item: any, index: number) => (
-                                    <WaterGauge
-                                        key={index}
-                                        baseAvailable={item.baseAvailable}
-                                        volumn={item.volumn}
-                                        waterName={item.water}
+                            <div className="text-4xl text-center font-bold"
+                                 style={{width: "250px"}}>{clickedCounty}</div>
+
+                            <div className="flex">
+                                <div className="flex flex-col">
+                                    <div className="mt-10 mb-1">電力使用狀況</div>
+                                    {/* Electricity */}
+                                    <ElectricityGauge
+                                        usage={data[clickedCounty].electricity.usage}
+                                        maxSupply={data[clickedCounty].electricity.max_supply}
+                                        minSupply={data[clickedCounty].electricity.min_supply}
                                     />
-                                ))
-                            }
+                                </div>
+
+                                {/*/!* Earthquake *!/*/}
+                                {/*<div className="flex flex-col">*/}
+                                {/*    <div className="mt-10 mb-1">最近地震</div>*/}
+                                {/*    <div>456</div>*/}
+                                {/*</div>*/}
+                            </div>
+
+                            {/* Water */}
+                            <div className="mt-5 mb-1">水庫蓄水狀況</div>
+                            <div
+                                className="flex flex-row flex-wrap rounded-lg border-slate-400 border-1 bg-slate-800 pt-5"
+                                style={{minHeight: "302px"}}>
+                                {
+                                    data[clickedCounty].water.length !== 0 && data[clickedCounty].water.map((item: any, index: number) => (
+                                        <WaterGauge
+                                            key={index}
+                                            baseAvailable={item.baseAvailable}
+                                            volumn={item.volumn}
+                                            waterName={item.water}
+                                        />
+                                    ))
+                                }
+                                {
+                                    data[clickedCounty].water.length === 0 &&
+                                    <div className="flex justify-center" style={{width: "250px"}}>
+                                        <div
+                                            className="text-2xl text-center font-bold align-middle text-rose-400">無水庫資料
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
                         </>
                     }
                 </div>

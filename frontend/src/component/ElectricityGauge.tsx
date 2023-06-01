@@ -78,7 +78,7 @@ const ElectricityGauge: FC<Props> = (props) => {
 
         /*** DRAW ARC ***/
         ctx.lineWidth = 20;
-        ctx.shadowBlur = 20;
+        // ctx.shadowBlur = 20;
 
         // const gradient = ctx.createLinearGradient(0, 0, 0, 170);
         let gradient = ctx.createConicGradient(0.8 * Math.PI, centerX, centerY);
@@ -143,7 +143,7 @@ const ElectricityGauge: FC<Props> = (props) => {
     }, []);
 
     return (
-        <div className="relative">
+        <div className="relative rounded-lg border-slate-400 border-1 bg-slate-800" style={{width: "250px", height: "250px"}}>
             <canvas width={250} height={250} ref={gaugeRef}></canvas>
             <div className="absolute z-50 text-2xl font-bold" style={{top: "60%", left: "50%", transform: "translateX(-50%)"}} ref={statsRef}></div>
             <div className="absolute z-50 text-lg" style={{top: "75%", left: "20%", transform: "translateX(-50%)", color: "#34D5F6"}} ref={minRef}></div>

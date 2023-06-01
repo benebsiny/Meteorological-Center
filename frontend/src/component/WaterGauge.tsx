@@ -18,6 +18,7 @@ const WaterGauge: FC<Props> = (props) => {
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const percentRef = useRef<HTMLDivElement>(null);
+    const nameRef = useRef<HTMLDivElement>(null);
     const animation = useRef(-1);
 
 
@@ -31,7 +32,7 @@ const WaterGauge: FC<Props> = (props) => {
     }, []);
 
     useEffect(() => {
-        if (!canvasRef.current || !percentRef.current) return;
+        if (!canvasRef.current || !percentRef.current || !nameRef.current) return;
         const ctx = canvasRef.current.getContext("2d")!;
         ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
@@ -40,9 +41,18 @@ const WaterGauge: FC<Props> = (props) => {
 
         const percentage = props.volumn / props.baseAvailable;
         percentRef.current.innerText = `${Number.parseFloat(String(percentage * 100)).toFixed(1)}%`;
-        if (percentage >= 0.5) percentRef.current.style.color = BLUE1;
-        else if (percentage >= 0.3) percentRef.current.style.color = YELLOW1;
-        else percentRef.current.style.color = RED1;
+        if (percentage >= 0.5) {
+            percentRef.current.style.color = BLUE1;
+            nameRef.current.style.color = BLUE2;
+        }
+        else if (percentage >= 0.3) {
+            percentRef.current.style.color = YELLOW1;
+            nameRef.current.style.color = YELLOW2;
+        }
+        else {
+            percentRef.current.style.color = RED1;
+            nameRef.current.style.color = RED2;
+        }
 
         updateWave(); // Wave animation
     }, [props]);
@@ -139,13 +149,17 @@ const WaterGauge: FC<Props> = (props) => {
     }
 
     return (
-        <div className="relative">
-            <canvas width={250} height={250} ref={canvasRef}/>
-            <div
-                ref={percentRef}
-                className="absolute font-bold text-5xl left-1/2 top-1/2 mix-blend-color-dodge"
-                style={{transform: "translate(-50%,-50%)"}}></div>
+        <div>
+            <div ref={nameRef} className="text-center text-2xl font-bold">{props.waterName}</div>
+            <div className="relative">
+                <canvas width={250} height={250} ref={canvasRef}/>
+                <div
+                    ref={percentRef}
+                    className="absolute font-bold text-5xl left-1/2 top-1/2 mix-blend-color-dodge"
+                    style={{transform: "translate(-50%,-50%)"}}></div>
+            </div>
         </div>
+
     );
 };
 
