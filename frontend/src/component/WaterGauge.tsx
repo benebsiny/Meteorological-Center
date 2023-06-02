@@ -73,7 +73,9 @@ const WaterGauge: FC<Props> = (props) => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d")!;
 
-        const percentage = props.volumn / props.baseAvailable;
+        let percentage = props.volumn / props.baseAvailable;
+        if (percentage < 0) percentage = 0;
+        if (percentage > 1) percentage = 1;
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawBackground(canvas, ctx, percentage); // Draw circle

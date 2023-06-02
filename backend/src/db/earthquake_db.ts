@@ -22,7 +22,7 @@ export default async function (): Promise<types[]> {
         
         const time = new Date(d.time);
 
-        if ((today.getTime() - time.getTime()) >= 7*24*60*60*1000) {
+        if ((today.getTime() - time.getTime()) >= 3*24*60*60*1000) {
             break;
         }
 

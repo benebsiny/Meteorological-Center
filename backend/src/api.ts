@@ -110,13 +110,14 @@ const api = async (req: Request, res: Response) => {
     // Earthquake
     for (const e of earthquake) {
         for (const v of e.vibration) {
-            data[v.location].earthquake = {
+            if (!data[v.location].earthquake) data[v.location].earthquake = [];
+            data[v.location].earthquake.push({
                 time: e.time,
                 epicenter: e.epicenter,
                 deep: e.deep,
                 magnitude: e.magnitude,
                 vib: v.vib,
-            }
+            });
         }
     }
 

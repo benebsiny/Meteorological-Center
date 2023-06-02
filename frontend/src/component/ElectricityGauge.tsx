@@ -42,7 +42,7 @@ const ElectricityGauge: FC<Props> = (props) => {
     function changeText() {
         if (!statsRef.current || !minRef.current || !maxRef.current || !gaugeRef.current) return;
 
-        statsRef.current.innerText = `${usage}`;
+        statsRef.current.innerText = `${usage}萬瓩`;
         minRef.current.innerText = `${minSupply}`;
         maxRef.current.innerText = `${maxSupply}`;
 

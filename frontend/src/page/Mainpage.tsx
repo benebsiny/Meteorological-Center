@@ -1,8 +1,9 @@
-import React, {FC, MouseEventHandler, RefObject, useEffect, useRef, useState} from "react";
+import React, { FC, MouseEventHandler, RefObject, useEffect, useRef, useState } from "react";
 import "style/mainpage.scss"
-import {ReactComponent as Logo} from 'assets/tw.svg'
+import { ReactComponent as Logo } from 'assets/tw.svg'
 import ElectricityGauge from "component/ElectricityGauge";
 import WaterGauge from "component/WaterGauge";
+import EarthquakeText from "component/EarthquakeText";
 
 const Mainpage: FC<any> = () => {
 
@@ -71,14 +72,14 @@ const Mainpage: FC<any> = () => {
 
     return (
         <>
-            <div className="flex flex-row justify-between" style={{minWidth: "1240px"}}>
-                <div className="flex flex-col ml-32">
+            <div className="flex flex-row justify-between 2xl:justify-center mt-16" style={{ minWidth: "1240px" }}>
+                <div className="flex flex-col 2xl:ml-32 ml-16">
                     {clickedCounty && data &&
                         <>
-                            <div className="text-4xl text-center font-bold"
-                                 style={{width: "250px"}}>{clickedCounty}</div>
+                            <div className="text-4xl font-bold"
+                                style={{ width: "250px" }}>{clickedCounty}</div>
 
-                            <div className="flex">
+                            <div className="flex gap-5">
                                 <div className="flex flex-col">
                                     <div className="mt-10 mb-1">電力使用狀況</div>
                                     {/* Electricity */}
@@ -89,18 +90,38 @@ const Mainpage: FC<any> = () => {
                                     />
                                 </div>
 
-                                {/*/!* Earthquake *!/*/}
-                                {/*<div className="flex flex-col">*/}
-                                {/*    <div className="mt-10 mb-1">最近地震</div>*/}
-                                {/*    <div>456</div>*/}
-                                {/*</div>*/}
+                                {/* Earthquake */}
+                                <div className="flex flex-col">
+                                    <div className="mt-10 mb-1">最近地震</div>
+                                    <div className="flex flex-col overflow-auto" style={{ maxHeight: "250px", minWidth: "420px" }}>
+                                        {
+                                            data[clickedCounty].earthquake &&
+                                            data[clickedCounty].earthquake.map((item: any, index: number) => (
+                                                <EarthquakeText
+                                                    key={index}
+                                                    time={item.time}
+                                                    epicenter={item.epicenter}
+                                                    deep={item.deep}
+                                                    magnitude={item.magnitude}
+                                                    vib={item.vib}
+                                                />
+                                            ))
+                                        }
+                                        {
+                                            !data[clickedCounty].earthquake &&
+                                            <div className="flex text-slate-500 text-xl" style={{ width: "250px" }}>
+                                                無地震資料
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
                             </div>
 
                             {/* Water */}
                             <div className="mt-5 mb-1">水庫蓄水狀況</div>
                             <div
                                 className="flex flex-row flex-wrap rounded-lg border-slate-400 border-1 bg-slate-800 pt-5"
-                                style={{minHeight: "302px"}}>
+                                style={{ minHeight: "302px", maxWidth: "750px" }}>
                                 {
                                     data[clickedCounty].water.length !== 0 && data[clickedCounty].water.map((item: any, index: number) => (
                                         <WaterGauge
@@ -113,9 +134,9 @@ const Mainpage: FC<any> = () => {
                                 }
                                 {
                                     data[clickedCounty].water.length === 0 &&
-                                    <div className="flex justify-center" style={{width: "250px"}}>
+                                    <div className="flex" style={{ width: "250px" }}>
                                         <div
-                                            className="text-2xl text-center font-bold align-middle text-rose-400">無水庫資料
+                                            className="text-xl text-center align-middle text-slate-500 ml-2">無水庫資料
                                         </div>
                                     </div>
                                 }
@@ -125,8 +146,8 @@ const Mainpage: FC<any> = () => {
                     }
                 </div>
 
-                <div className="flex-1">
-                    <Logo className="tw-map" ref={mapRef} onClick={clicked}/>
+                <div className="2xl:mr-32 mr-16 2xl:ml-8">
+                    <Logo className="tw-map" ref={mapRef} onClick={clicked} />
                 </div>
             </div>
         </>
