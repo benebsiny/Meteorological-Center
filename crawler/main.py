@@ -54,8 +54,8 @@ def run():
 
     except ServerSelectionTimeoutError:
         logging.error("Unable to connect to database")
-        exit()
-
+    except Exception as e:
+        logging.error(e)
 
 
 if __name__ == "__main__":
@@ -66,6 +66,8 @@ if __name__ == "__main__":
         logging.info("[Debug mode]")
         run()
         exit()
+
+    run() # Run at start up
 
     scheduler = BlockingScheduler()
     scheduler.add_job(run, 'interval', hours=1)
