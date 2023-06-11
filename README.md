@@ -10,7 +10,7 @@ Development mode:
 docker compose -f docker-compose.dev.yml up -d
 ```
 
-Producation mode:
+Production mode:
 ```
 docker compose up -d
 ```
